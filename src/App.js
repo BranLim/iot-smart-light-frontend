@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 function App() {
+
+  const [lightState, setLightState] = useState(0);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <FormControl component="fieldset">
+          <FormControlLabel control={<Switch onChange={(evt) => {
+
+          }} />}
+            label={lightState === 1 ? "On" : "Off"} labelPlacement="right" />
+        </FormControl>
+      </Box>
+    </Container>
   );
 }
 
