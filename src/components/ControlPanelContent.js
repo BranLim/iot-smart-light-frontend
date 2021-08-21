@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Box, FormControlLabel, FormGroup, FormLabel, Grid, Slider, Switch, Typography} from '@material-ui/core';
-import {updateLightState, updateLightBrightness, fetchLightStatus} from "../services/SmartLightsApi";
+import {updateLightState, updateLightBrightness, fetchLightStatus, updateLightColor} from "../services/SmartLightsApi";
 import {SketchPicker} from 'react-color'
 
 export const ControlPanelContent = () => {
@@ -17,6 +17,19 @@ export const ControlPanelContent = () => {
 
     const handleSliderValueChanged = (evt, value) => {
         updateLightBrightness(light.id, value, () => fetchLightStatus(updateLight));
+    };
+
+    const handleColorChanged = (color, evt) => {
+        if (light.pixels) {
+            light.pixels.forEach((pixel) => {
+                pixel.red = color.rgb.r;
+                pixel.green = color.rgb.g;
+                pixel.blue = color.rgb.b;
+
+            });
+            updateLightColor(light.id, light.pixels, () => fetchLightStatus(updateLight));
+            console.log(light.pixels);
+        }
     };
 
     const updateLight = (light) => {
@@ -90,7 +103,15 @@ export const ControlPanelContent = () => {
                         <FormLabel>Light Color</FormLabel>
                     </Grid>
                     <Grid item sm={9}>
-                        <SketchPicker></SketchPicker>
+                        <SketchPicker onChangeComplete={(color, evt) => handleColorChanged(color, evt)}
+                                      color={{
+                                          r: light.pixels[0]?.red || 0,
+                                          g: light.pixels[0]?.green || 0,
+                                          b: light.pixels[0]?.blue || 0,
+                                          a: 1
+                                      }}>
+
+                        </SketchPicker>
                     </Grid>
                 </Grid>
             </FormGroup>

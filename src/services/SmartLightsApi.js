@@ -21,7 +21,7 @@ export const updateLightBrightness = async (lightId, brightness, callback) => {
         });
 };
 
-export const fetchLightStatus = async(updateLight) => {
+export const fetchLightStatus = async (updateLight) => {
     axios.get(`${serverUrl}/api/v1/lights/status`)
         .then((response) => {
             const light = response.data;
@@ -29,5 +29,13 @@ export const fetchLightStatus = async(updateLight) => {
                 return;
             }
             updateLight(light);
+        });
+}
+
+export const updateLightColor = async (lightId, pixels, callback) => {
+    const api = `${serverUrl}/api/v1/lights/color`;
+    axios.post(api, {"id": lightId, "pixels": pixels})
+        .then(async (response) => {
+            await callback();
         });
 }
